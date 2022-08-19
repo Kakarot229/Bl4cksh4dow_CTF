@@ -1,0 +1,46 @@
+
+
+Git et Github
+
+Git : Gestionnaire de versions de projets
+
+Github : site de stockage à distance des dépôts facilitant le travail en équipe (décentralisation des dépôts possible)
+
+###Quelques configurations préalables
+
+git config [--global(pour tous les projets) user.name] "Name"
+git config [--global] user.email "email"
+git config [--global] color.diff auto
+git config [--global] color.status auto
+git config [--global] color.branch auto
+git config [--global] core.editor nano
+git config [--global] merge.tool vimdiff
+.....
+
+###Création du dépôt local
+
+git init ou 
+git clone "github link" | git remote add [alias] "github link"
+
+
+														git push origin main(ou toute autre branche avec -u)
+									 						===========>
+Working Directory ==========> Stage (Index) 	=========> 	Repository				Github
+															<===========		
+		git add files list	    git commit -m "MessageRepère"
+							(générer et utiliser un token access comme pass)
+		
+
+La principale branche d'un dépôt distant est le main. C'est le code final et original. Afin de faire des tests dans un environnement séparé, il est conseillé d'utiliser d'autres branches avant de fusionner le code s'y trouvant avec le code final.
+
+git branch : pour voir les branches disponibles
+git branch <new_branch> : pour créer une nouvelle branche
+git checkout branch : pour switcher à branch (à faire avant de faire un commit sur branch)
+git push -u origin branch
+git checkout main puis git merge branch : pour fusionner branch et main
+
+git pull origin branch pour récupérer les modifications effectuées sur branch
+
+
+
+
