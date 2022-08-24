@@ -1,0 +1,127 @@
+
+
+Git et Github
+
+Git : Gestionnaire de versions de projets
+
+Github : site de stockage à distance des dépôts facilitant le travail en équipe (décentralisation des dépôts possible)
+
+###Quelques configurations préalables
+
+git config [--global(pour tous les projets) user.name] "Name"
+git config [--global] user.email "email"
+git config [--global] color.diff auto
+git config [--global] color.status auto
+git config [--global] color.branch auto
+git config [--global] core.editor nano
+git config [--global] merge.tool vimdiff
+.....
+
+###Création du dépôt local
+
+git init ou 
+git clone "github link" | git remote add [alias] "github link"
+
+
+													git push origin main(ou toute autre branche avec -u). Générer et utiliser un token access comme pass
+									 						===========>
+Working Directory ==========> Stage (Index) 	=========> 	Repository				Github
+															<===========		
+		git add files list	    git commit -m "MessageRepère"
+		
+
+La principale branche d'un dépôt distant est le main. C'est le code final et original. Afin de faire des tests dans un environnement séparé, il est conseillé d'utiliser d'autres branches avant de fusionner le code s'y trouvant avec le code final.
+
+git branch : pour voir les branches disponibles
+git branch <new_branch> : pour créer une nouvelle branche
+git checkout branch : pour switcher à branch (à faire avant de faire un commit sur branch)
+git push -u origin branch. Créer ensuite un pull request. Vous pourrez ensuite faire un merge.
+git checkout main puis git merge branch : pour fusionner branch et main
+
+git pull origin branch pour récupérer les modifications effectuées sur branch. 
+
+git branch -M oldBranchName newBranchName. Si le old n'est pas donné, la branche active est considérée
+git branch -D branch : pour supprimer une branche
+
+++En cas de modification par erreur sur la branche principale sans qu'un commit n'ait été fait, il est toujours possible de réparer l'erreur.
+
+git status : pour voir l'état des fichiers
+git stash : pour récupérer les modifications
+Switch sur la branche cible puis
+git stash apply pour appliquer le dernier stash. Si pour une raison ou une autre il y a plusieurs stash, faire d'abord un git stash list puis
+git stash apply stash@{number}
+
+++ En cas d'un commit erronné
+
+git reset --hard HEAD^ : va supprimer le dernier commit i.e le pointeur HEAD est mis à l'avant dernier commit et le dernier commit est supprimé
+Sur la branche souhaitée faire 
+
+	##  Details
+
+	Il existe trois principales options : 
+
+	--soft ==>  ne fait que faire pointer HEAD vers un autre commit (donc mise à jour des fichiers du repository)
+
+	--mixed ==> soft + mise à jour des fichiers de l'index
+
+	--hard ==> mixed + mise à jour du working directory 
+
+	Reférencement des commits à partir du pointeur HEAD
+
+			G   H   I   J
+			 \ /     \ /
+			  D   E   F
+			   \  |  / \
+			    \ | /   |							git log --graph affiche cet arbre à l'envers
+				\|/    |
+				 B     C
+				  \   /
+				   \ /
+		  A = Commit avec HEAD
+
+	A =      = A^0
+	B = A^   = A^1     = A~1
+	C = A^2
+	D = A^^  = A^1^1   = A~2
+	E = B^2  = A^^2
+	F = B^3  = A^^3
+	G = A^^^ = A^1^1^1 = A~3
+	H = D^2  = B^^2    = A^^^2  = A~2^2
+	I = F^   = B^3^    = A^^3^
+	J = F^2  = B^3^2   = A^^3^2
+
+	So, ^ == ^1 == LEFTMOST PARENT, ^2 == SECOND LEFTMOST PARENT and so forth. And ~ == ~1 == LEFTMOST PARENT, ~2 == LEFTMOST PARENTS LEFTMOST PARENT == LEFTMOST GRANDPARENT. By extension, ~2^2 == LEFTMOST GRANDPARENTS SECOND LEFTMOST PARENT
+	
+	^ quand il y a eu des merges
+
+	Si le reset du commit n'est pas récent i.e si l'opération n'est plus réfencée (vérifier avec git reflog), alors on peut annuler un hard reset avec la commande
+	git reset --hard HEAD@{number}
+
+git reset --hard hash_commit (les 8 premiers caractères suffiront. Cela permettra de mettre à jour la branche pointée par HEAD)
+
+*** git reset file.txt ====> désindexe file.txt en copiant sa version du commit pointé par HEAD
+*** git reset first_8_hash_commit_caracters file.txt ====> désindexe file.txt en copiant sa version du commit first_8_hash_commit_caracters
+
+++ En cas d'omission de fichier ou de message erroné pour le dernier commit
+
+git commit --amend -m "Nouveau message"
+git commit --amend --no-edit : pour ajouter le dernier fichier indexé au dernier commit
+
+++ En cas de push erroné
+
+git revert HEAD^. Cette commande peut écraser des fichiers dans le working directory. Un commit ou un stash est demandé.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
